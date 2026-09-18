@@ -1,0 +1,95 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <span class="eyebrow">Vue d’ensemble</span>
+        <h1 class="page-title">Dashboard</h1>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card primary">
+            <span>Documents</span>
+            <strong>{{ total_documents }}</strong>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card success">
+            <span>Visibles</span>
+            <strong>{{ visible_documents }}</strong>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card warning">
+            <span>Masqués</span>
+            <strong>{{ hidden_documents }}</strong>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card info">
+            <span>Catégories</span>
+            <strong>{{ total_categories }}</strong>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card purple">
+            <span>Téléchargements</span>
+            <strong>{{ total_downloads }}</strong>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="stat-card danger">
+            <span>Consultations</span>
+            <strong>{{ total_views }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="admin-panel">
+            <h3>Documents ajoutés récemment</h3>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Document</th>
+                            <th>Catégorie</th>
+                            <th>Vues</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for document in recent_documents %}
+                        <tr>
+                            <td>{{ document.title }}</td>
+                            <td>{{ document.subject.name if document.subject else 'N/A' }}</td>
+                            <td>{{ document.views }}</td>
+                            <td><span class="status-badge {% if document.is_visible %}visible{% else %}hidden{% endif %}">{% if document.is_visible %}Visible{% else %}Masqué{% endif %}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4">Aucun document ajouté.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="admin-panel">
+            <h3>Performance</h3>
+            <div class="mini-chart">
+                <div class="chart-bar" style="height: 42%"></div>
+                <div class="chart-bar" style="height: 58%"></div>
+                <div class="chart-bar" style="height: 70%"></div>
+                <div class="chart-bar" style="height: 80%"></div>
+                <div class="chart-bar" style="height: 92%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

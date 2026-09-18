@@ -1,0 +1,60 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <span class="eyebrow">Gestion</span>
+        <h1 class="page-title">Catégories</h1>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="admin-panel">
+            <h3>Ajouter une catégorie</h3>
+            <form method="post" action="{{ url_for('admin.add_category') }}">
+                <div class="mb-3">
+                    <label class="form-label">Nom</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Icône</label>
+                    <input type="text" name="icon" class="form-control" value="📚">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-7">
+        <div class="admin-panel">
+            <h3>Liste des catégories</h3>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Icône</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                        <tr>
+                            <td>{{ subject.name }}</td>
+                            <td>{{ subject.icon }}</td>
+                            <td>{{ subject.description or '—' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

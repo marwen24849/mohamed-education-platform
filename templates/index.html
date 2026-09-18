@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-7">
+        <span class="eyebrow">Plateforme éducative</span>
+        <h1>Apprenez.<br>Pratiquez.<br>Réussissez.</h1>
+        <p class="lead">Des milliers de ressources éducatives accessibles gratuitement pour chaque niveau.</p>
+        <form class="hero-search" action="{{ url_for('public.search') }}" method="get">
+          <input type="search" name="q" class="form-control form-control-lg" placeholder="Rechercher un cours, exercice, examen..." aria-label="Rechercher">
+          <button class="btn btn-primary btn-lg" type="submit">Rechercher</button>
+        </form>
+      </div>
+      <div class="col-lg-5">
+        <div class="hero-card">
+          <div class="stat-box">
+            <span>Documents</span>
+            <strong>{{ total_documents or 0 }}</strong>
+          </div>
+          <div class="stat-box">
+            <span>Vues</span>
+            <strong>{{ total_views or 0 }}</strong>
+          </div>
+          <div class="stat-box">
+            <span>Téléchargements</span>
+            <strong>{{ total_downloads or 0 }}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container section-spacing">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Matières populaires</span>
+      <h2>Explorer les catégories</h2>
+    </div>
+  </div>
+  <div class="row g-4">
+    {% for subject in subjects[:6] %}
+    <div class="col-md-6 col-lg-4">
+      <a href="{{ url_for('public.subject_detail', subject_id=subject.id) }}" class="subject-card">
+        <div class="subject-icon" style="background: {{ subject.color }};">{{ subject.icon }}</div>
+        <div>
+          <h3>{{ subject.name }}</h3>
+          <p>{{ subject.description or 'Ressources pédagogiques' }}</p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section-spacing">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Nouveautés</span>
+      <h2>Documents récents</h2>
+    </div>
+  </div>
+  <div class="row g-4">
+    {% for doc in recent %}
+    <div class="col-md-6 col-lg-4">
+      <div class="resource-card h-100">
+        <div class="resource-header">
+          <span class="mini-pill">{{ doc.document_type.name if doc.document_type else 'Document' }}</span>
+          <span class="meta-view"><i class="bi bi-eye"></i> {{ doc.views }}</span>
+        </div>
+        <h3>{{ doc.title }}</h3>
+        <div class="meta-row">
+          <span>{{ doc.subject.name if doc.subject else 'Autre' }}</span>
+          <span>{{ doc.level.name if doc.level else 'Tous niveaux' }}</span>
+        </div>
+        <p>{{ doc.description[:120] if doc.description else 'Ressource éducative détaillée.' }}</p>
+        <div class="resource-footer">
+          <small>{{ doc.created_at.strftime('%d/%m/%Y') }}</small>
+          <a href="{{ url_for('public.document_detail', document_id=doc.id) }}" class="btn btn-primary btn-sm">Consulter</a>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>Aucun document trouvé</h3>
+        <p>Essayez de modifier vos filtres ou votre recherche.</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section-spacing">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Les plus consultés</span>
+      <h2>Documents populaires</h2>
+    </div>
+  </div>
+  <div class="row g-4">
+    {% for doc in popular %}
+    <div class="col-md-6 col-lg-4">
+      <div class="resource-card h-100">
+        <div class="resource-header">
+          <span class="mini-pill hot">Populaire</span>
+          <span class="meta-view"><i class="bi bi-download"></i> {{ doc.downloads }}</span>
+        </div>
+        <h3>{{ doc.title }}</h3>
+        <div class="meta-row">
+          <span>{{ doc.subject.name if doc.subject else 'Autre' }}</span>
+          <span>{{ doc.level.name if doc.level else 'Tous niveaux' }}</span>
+        </div>
+        <p>{{ doc.description[:120] if doc.description else 'Ressource éducative très demandée.' }}</p>
+        <div class="resource-footer">
+          <small>{{ doc.views }} vues</small>
+          <a href="{{ url_for('public.document_detail', document_id=doc.id) }}" class="btn btn-outline-primary btn-sm">Voir</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="container section-spacing pb-5">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Par niveau</span>
+      <h2>Explorer par niveau</h2>
+    </div>
+  </div>
+  <div class="row g-3">
+    {% for level in levels %}
+    <div class="col-6 col-md-4 col-lg-3">
+      <a href="{{ url_for('public.documents_page', level_id=level.id) }}" class="level-card">
+        {{ level.name }}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

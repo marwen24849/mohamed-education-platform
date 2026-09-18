@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Matières | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="container section-spacing">
+  <div class="section-heading">
+    <div>
+      <span class="eyebrow">Explorer</span>
+      <h1 class="page-title">Matières</h1>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    {% for subject in subjects %}
+    <div class="col-md-6 col-lg-4">
+      <a href="{{ url_for('public.subject_detail', subject_id=subject.id) }}" class="subject-card h-100">
+        <div class="subject-icon" style="background: {{ subject.color }};">{{ subject.icon }}</div>
+        <div>
+          <h3>{{ subject.name }}</h3>
+          <p>{{ subject.description or 'Ressources pédagogiques' }}</p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

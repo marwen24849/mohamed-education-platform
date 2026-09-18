@@ -1,0 +1,54 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <span class="eyebrow">Configuration</span>
+        <h1 class="page-title">Paramètres</h1>
+    </div>
+</div>
+
+<div class="admin-panel">
+    <form method="post">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Nom de la plateforme</label>
+                <input type="text" name="site_name" class="form-control" value="{{ site_settings.site_name }}">
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Email de contact</label>
+                <input type="email" name="contact_email" class="form-control" value="{{ site_settings.contact_email }}">
+            </div>
+            <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea name="site_description" class="form-control" rows="4">{{ site_settings.site_description }}</textarea>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Documents par page</label>
+                <input type="number" name="documents_per_page" class="form-control" value="{{ site_settings.documents_per_page }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Taille max upload (octets)</label>
+                <input type="number" name="max_upload_size" class="form-control" value="{{ site_settings.max_upload_size }}">
+            </div>
+            <div class="col-md-4">
+                <div class="form-check mt-4">
+                    <input class="form-check-input" type="checkbox" name="download_enabled" {% if site_settings.download_enabled %}checked{% endif %}>
+                    <label class="form-check-label">Téléchargement activé</label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="maintenance_mode" {% if site_settings.maintenance_mode %}checked{% endif %}>
+                    <label class="form-check-label">Mode maintenance</label>
+                </div>
+            </div>
+            <div class="col-12 mt-3">
+                <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

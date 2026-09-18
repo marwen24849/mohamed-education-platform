@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ document.title }} | {{ site_settings.site_name }}{% endblock %}
+
+{% block content %}
+<section class="container section-spacing">
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb custom-breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('public.index') }}">Accueil</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('public.subjects_page') }}">Matières</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ document.title }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <div class="document-viewer">
+        {% if document.file_type.lower() in ['pdf'] %}
+        <iframe id="documentPreview" src="{{ url_for('public.preview_document', document_id=document.id) }}" title="{{ document.title }}" class="pdf-frame"></iframe>
+        {% else %}
+        <div class="empty-state compact">
+          <div class="empty-icon">📄</div>
+          <h3>Prévisualisation non disponible</h3>
+          <p>Ce type de fichier peut être téléchargé pour consultation.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="document-meta-card">
+        <span class="mini-pill">{{ document.document_type.name if document.document_type else 'Document' }}</span>
+        <h1>{{ document.title }}</h1>
+        <p>{{ document.description or 'Aucune description disponible.' }}</p>
+
+        <ul class="meta-list">
+          <li><strong>Matière :</strong> {{ document.subject.name if document.subject else 'N/A' }}</li>
+          <li><strong>Niveau :</strong> {{ document.level.name if document.level else 'N/A' }}</li>
+          <li><strong>Type :</strong> {{ document.document_type.name if document.document_type else 'N/A' }}</li>
+          <li><strong>Auteur :</strong> {{ document.author or 'Inconnu' }}</li>
+          <li><strong>Année :</strong> {{ document.school_year or 'N/A' }}</li>
+          <li><strong>Vues :</strong> {{ document.views }}</li>
+          <li><strong>Téléchargements :</strong> {{ document.downloads }}</li>
+          <li><strong>Date :</strong> {{ document.created_at.strftime('%d/%m/%Y') }}</li>
+        </ul>
+
+        {% if document.tags %}
+        <div class="tag-list">
+          {% for tag in document.tags %}
+          <span class="tag-badge">{{ tag.name }}</span>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="action-buttons mt-4">
+          {% if document.allow_download and site_settings.download_enabled %}
+          <a href="{{ url_for('public.download_document', document_id=document.id) }}" class="btn btn-primary w-100 mb-2"><i class="bi bi-download"></i> Télécharger</a>
+          {% endif %}
+          <button class="btn btn-outline-secondary w-100 mb-2 favorite-btn" type="button" data-document-id="{{ document.id }}"><i class="bi bi-heart"></i> Ajouter aux favoris</button>
+          <button class="btn btn-outline-secondary w-100" type="button" onclick="printDocumentPreview()"><i class="bi bi-printer"></i> Imprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="doc-navigation mt-4 d-flex justify-content-between">
+    {% if prev_doc %}
+    <a href="{{ url_for('public.document_detail', document_id=prev_doc.id) }}" class="btn btn-outline-primary">← Document précédent</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+    {% if next_doc %}
+    <a href="{{ url_for('public.document_detail', document_id=next_doc.id) }}" class="btn btn-outline-primary">Document suivant →</a>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+function printDocumentPreview() {
+  const iframe = document.getElementById('documentPreview');
+  if (iframe && iframe.contentWindow) {
+    iframe.contentWindow.focus();
+    iframe.contentWindow.print();
+    return;
+  }
+  window.print();
+}
+</script>
+{% endblock %}
