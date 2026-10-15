@@ -11,8 +11,8 @@ UPLOAD_FOLDER = Path(BASE_DIR) / 'uploads'
 INSTANCE_DIR.mkdir(parents=True, exist_ok=True)
 UPLOAD_FOLDER.mkdir(parents=True, exist_ok=True)
 
-MYSQL_HOST = os.getenv('MYSQL_HOST', '127.0.0.1')
-MYSQL_PORT = os.getenv('MYSQL_PORT', '3377')
+MYSQL_HOST = os.getenv('MYSQL_HOST', 'db')
+MYSQL_PORT = os.getenv('MYSQL_PORT', '3306')
 MYSQL_USER = os.getenv('MYSQL_USER', 'root')
 MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', 'root_password')
 MYSQL_DATABASE = os.getenv('MYSQL_DATABASE', 'mohamed')

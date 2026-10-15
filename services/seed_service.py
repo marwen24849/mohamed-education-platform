@@ -13,7 +13,7 @@ def seed_initial_data():
         db.session.add(admin)
 
     if SiteSettings.query.count() == 0:
-        db.session.add(SiteSettings())
+        db.session.add(SiteSettings(site_name='Academy Najjah'))
 
     subjects = [
         ('Mathématiques', 'Ressources mathématiques', '📐', '#3b82f6'),

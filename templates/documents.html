@@ -7,7 +7,13 @@
   <div class="row g-4">
     <aside class="col-lg-3">
       <div class="filter-panel">
-        <h3>Filtres</h3>
+        <div class="filter-panel-top">
+          <div>
+            <span class="eyebrow">Filtrer</span>
+            <h3>Ressources</h3>
+          </div>
+          <a href="{{ url_for('public.documents_page') }}" class="reset-link">Réinitialiser</a>
+        </div>
         <form action="{{ url_for('public.documents_page') }}" method="get">
           <div class="mb-3">
             <label class="form-label">Matière</label>
@@ -45,7 +51,7 @@
               <option value="alphabetical" {% if sort == 'alphabetical' %}selected{% endif %}>Alphabétique</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-primary w-100">Appliquer</button>
+          <button type="submit" class="btn btn-primary w-100 premium-btn">Appliquer</button>
         </form>
       </div>
     </aside>
